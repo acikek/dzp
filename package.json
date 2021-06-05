@@ -1,0 +1,31 @@
+{
+  "name": "dzp",
+  "version": "1.0.0",
+  "description": "DeniZip, the Denizen Project Manager",
+  "main": "src/index.js",
+  "bin": {
+    "@acikek/dzp": "bin/dzp.js",
+    "dzp": "bin/dzp.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "denizip",
+    "denizen",
+    "project",
+    "manager",
+    "cli",
+    "tool"
+  ],
+  "author": "acikek",
+  "license": "MIT",
+  "dependencies": {
+    "arg": "^5.0.0",
+    "chalk": "^4.1.1",
+    "semver": "^7.3.5"
+  },
+  "engines": {
+    "node": ">=12"
+  }
+}

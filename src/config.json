@@ -1,0 +1,4 @@
+{
+  "logo": "          ###\n          ###\n          ###\n  .######################  ##########.\n ###      ###       .##    ###      ###\n###       ###     .##      ###       ###\n ###      ###   .##        ###      ###\n  .##########  ######################.\n                           ###\n                           ###\n                           ###",
+  "newMsg": "This utility will initialize the current directory with a Denizen project,\nincluding the creation of a dzp.json file.\n\nRun `dzp new --help` for more info on each field and their specific uses.\n\nPress ^C at any time to exit.\n"
+}

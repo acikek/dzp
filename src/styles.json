@@ -1,0 +1,16 @@
+{
+  "project": {
+    "dirs": [
+      "src",
+      "src/main",
+      "src/data",
+      "src/util"
+    ],
+    "main": "src/main/",
+    "config": "src/data/"
+  },
+  "drop-in": {
+    "dirs": [],
+    "main": ""
+  }
+}

@@ -19,7 +19,7 @@ DeniZip `(dzp)`, the Denizen Project Manager, is a command-line tool that aids i
 
 ## Setup
 
-**Requires Node.js v12 or newer.**
+**Requires Node.js v12 or newer.**<br>
 Install the package globally:
 ```sh
 npm install dzp -g
@@ -59,35 +59,35 @@ The Denizen files and README are pre-fitted with boilerplate code, and the `dzp.
 
 ## Commands
 
-View all commands with `dzp help --usage`.
+View all commands with `dzp help --usage`.<br>
 To view a specific command and its extended description, run `dzp <command> --help`.
 
 ### **`get`**
-**Usage**: `dzp get <key>`
+**Usage**: `dzp get <key>`<br>
 Retrieves a project config value.
 
 ### `help`
-**Usage**: `dzp help --usage`
+**Usage**: `dzp help --usage`<br>
 Displays the help message.
 
 ### `install`
-**Usage**: `dzp install [<repo>] [--update]`
+**Usage**: `dzp install [<repo>] [--update]`<br>
 Installs a dependency chain.
 
 ### `new`
-**Usage**: `dzp new [--use-style <style>] [--json-spacing <spaces>] [--no-deps]`
+**Usage**: `dzp new [--use-style <style>] [--json-spacing <spaces>] [--no-deps]`<br>
 Creates a new DeniZip project.
 
 ### `set`
-**Usage**: `dzp set <key> <value>`
+**Usage**: `dzp set <key> <value>`<br>
 Updates a project config value.
 
 ### `styles`
-**Usage**: `dzp styles`
+**Usage**: `dzp styles`<br>
 Lists the loaded style names.
 
 ### `uninstall`
-**Usage**: `dzp uninstall <name>`
+**Usage**: `dzp uninstall <name>`<br>
 Uninstalls a dependency.
 
 ## License

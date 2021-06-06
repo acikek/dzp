@@ -79,7 +79,7 @@ Installs a dependency chain.
 Creates a new DeniZip project.
 
 ### `readme`
-**Usage**: `dzp readme [--json] [--use <path>]`
+**Usage**: `dzp readme [--json] [--use <path>]`<br>
 Generates a README file.
 
 ### `script`

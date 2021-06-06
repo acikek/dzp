@@ -78,6 +78,10 @@ Installs a dependency chain.
 **Usage**: `dzp new [--style <style>] [--spacing <spaces>] [--no-deps] [--no-git]`<br>
 Creates a new DeniZip project.
 
+### `readme`
+**Usage**: `dzp readme [--json] [--use <path>]`
+Generates a README file.
+
 ### `script`
 **Usage**: `dzp script [<name>] [--list] [--data]`<br>
 Finds info about a script.

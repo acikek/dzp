@@ -1,10 +1,9 @@
 {
   "name": "dzp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "DeniZip, the Denizen Project Manager",
   "main": "src/index.js",
   "bin": {
-    "@acikek/dzp": "bin/dzp.js",
     "dzp": "bin/dzp.js"
   },
   "scripts": {

@@ -1,4 +1,4 @@
-div align="center">
+<div align="center">
   <br/>
   <p>
     <img src="https://imgur.com/GZwNotP.png" width="400" alt="ruqqus-js"/></a>

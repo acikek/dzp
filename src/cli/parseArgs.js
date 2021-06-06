@@ -8,11 +8,16 @@ function parseArgs(argv) {
         // Arguments
         "--help":         Boolean,
         "--version":      Boolean,
-        "--json-spacing": Number,
-        "--use-style":    String,
+        "--spacing":      Number,
+        "--style":        String,
+        "--json":         Boolean,
+        "--use":          String,
+        "--list":         Boolean,
         "--no-deps":      Boolean,
+        "--no-git":       Boolean,
         "--usage":        Boolean,
         "--update":       Boolean,
+        "--data":         Boolean,
   
         // Aliases
         "-h": "--help",

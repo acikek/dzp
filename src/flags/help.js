@@ -1,5 +1,6 @@
 const { EOL } = require("os");
 const config = require("../config.json");
+const package = require("../../package.json");
 
 function help(commands, showUsage) {
   const headers = commands.map(c => [`${c.name}${showUsage ? ` ${c.usage}` : ""}`, c.desc]);
@@ -13,7 +14,8 @@ ${config.logo}
 Usage: dzp <command> [--help]
 
 ${formatted.join(EOL)}
-`);
+
+dzp@${package.version} - ${package.repository.url}`);
 }
 
 module.exports = help;

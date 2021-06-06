@@ -7,7 +7,7 @@ function getDzp(cwd, force) {
     return JSON.parse(fs.readFileSync(`${cwd}/dzp.json`));
   } catch (err) {
     if (force) return {};
-    cliError(err.message);
+    cliError("no DeniZip project found in this directory. Create one with `dzp new`");
   }
 }
 

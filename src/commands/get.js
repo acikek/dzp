@@ -4,7 +4,7 @@ const cliError = require("../cli/error.js");
 const getDzp = require("../cli/getDzp.js");
 
 module.exports = new Command("get", "Retrieves a project config value", "<key>")
-  .setExec((flags, key) => {
+  .setExec((parsed, key) => {
     const dzp = getDzp(process.cwd());
     const value = dzp[key];
 

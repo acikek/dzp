@@ -37,11 +37,11 @@ async function versionPrompt(q) {
 module.exports = new Command(
   "new", 
   "Creates a new DeniZip project", 
-  "[--use-style <style>] [--json-spacing <spaces>] [--no-deps]",
+  "[--style <style>] [--spacing <spaces>] [--no-deps] [--no-git]",
   help
 )
-  .setExec(async (parsed, styles) => {
-    const style = styles[(parsed["--use-style"] || "project").toLowerCase()];
+  .setExec(async (parsed) => {
+    const style = parsed["--styles"][(parsed["--style"] || "project").toLowerCase()];
     if (!style) cliError("style not found");
 
     [style.main, style.config]
@@ -80,7 +80,7 @@ module.exports = new Command(
       author,
       repository,
       dependencies: []
-    }, null, parsed["--json-spacing"] || 2);
+    }, null, parsed["--spacing"] || 2);
 
     const confName = `${!!acronym ? acronym : name.toLowerCase()}_config`;
 
@@ -105,12 +105,14 @@ module.exports = new Command(
 
 ${description}`;
 
-    // Initialize git repo
-    exec("git init", (error, stdout, stderr) => {
-      if (error) {
-        cliError(error.message);
-      }
-    });
+    if (!parsed["--no-git"]) {
+      // Initialize git repo
+      exec("git init", (error, stdout, stderr) => {
+        if (error) {
+          cliError(error.message);
+        }
+      });
+    }
 
     // Create directories
     const dirs = style.dirs;

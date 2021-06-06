@@ -1,4 +1,4 @@
-<div align="center">
+div align="center">
   <br/>
   <p>
     <img src="https://imgur.com/GZwNotP.png" width="400" alt="ruqqus-js"/></a>
@@ -62,12 +62,12 @@ The Denizen files and README are pre-fitted with boilerplate code, and the `dzp.
 View all commands with `dzp help --usage`.<br>
 To view a specific command and its extended description, run `dzp <command> --help`.
 
-### **`get`**
+### `get`
 **Usage**: `dzp get <key>`<br>
 Retrieves a project config value.
 
 ### `help`
-**Usage**: `dzp help --usage`<br>
+**Usage**: `dzp help [--usage]`<br>
 Displays the help message.
 
 ### `install`
@@ -75,15 +75,19 @@ Displays the help message.
 Installs a dependency chain.
 
 ### `new`
-**Usage**: `dzp new [--use-style <style>] [--json-spacing <spaces>] [--no-deps]`<br>
+**Usage**: `dzp new [--style <style>] [--spacing <spaces>] [--no-deps] [--no-git]`<br>
 Creates a new DeniZip project.
+
+### `script`
+**Usage**: `dzp script [<name>] [--list] [--data]`<br>
+Finds info about a script.
 
 ### `set`
 **Usage**: `dzp set <key> <value>`<br>
 Updates a project config value.
 
-### `styles`
-**Usage**: `dzp styles`<br>
+### `style`
+**Usage**: `dzp style [<name>]`<br>
 Lists the loaded style names.
 
 ### `uninstall`

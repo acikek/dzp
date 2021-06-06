@@ -7,7 +7,7 @@ const getDzp = require("../cli/getDzp.js");
 const updateDzp = require("../cli/updateDzp.js");
 
 module.exports = new Command("set", "Updates a project config value", "<key> <value>")
-  .setExec((flags, key, value) => {
+  .setExec((parsed, key, value) => {
     const cwd = process.cwd();
     const dzp = getDzp(cwd);
 

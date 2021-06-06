@@ -15,13 +15,9 @@ function passArgs(parsed, commands) {
     if (parsed["--help"]) {
       return console.log(c.getHelp());
     }
-
-    return c.exec(parsed, command === "help" 
-      ? cArr 
-      : ["new", "styles"].includes(command)
-      ? [styles]
-      : args
-    );
+    
+    parsed["--styles"] = styles;
+    return c.exec(parsed, command === "help" ? cArr : args);
   }
 
   if (parsed["--version"]) {

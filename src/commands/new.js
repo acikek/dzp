@@ -120,7 +120,7 @@ ${description}`;
 
     if (hasDeps) dirs.push("deps");
 
-    dirs.forEach(p => fs.mkdir(`${cwd}/${p}`, {}, err => cliError(`${err}`, true)));
+    dirs.forEach(p => fs.mkdir(`${cwd}/${p}`, err => cliError(err, true)));
 
     // Create files
     if (hasDeps) fs.writeFileSync(`${cwd}/.gitignore`, "deps");

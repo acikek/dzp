@@ -105,6 +105,12 @@ module.exports = new Command(
 
 ${description}`;
 
+    // Create directories
+    const dirs = style.dirs;
+    const hasDeps = !parsed["--no-deps"];
+
+    if (hasDeps) dirs.push("deps");
+
     if (!parsed["--no-git"]) {
       // Initialize git repo
       exec("git init", (error, stdout, stderr) => {
@@ -112,18 +118,17 @@ ${description}`;
           cliError(error.message);
         }
       });
+    
+      if (hasDeps) fs.writeFileSync(`${cwd}/.gitignore`, "deps");
     }
 
-    // Create directories
-    const dirs = style.dirs;
-    const hasDeps = !parsed["--no-deps"];
-
-    if (hasDeps) dirs.push("deps");
-
-    dirs.forEach(p => fs.mkdir(`${cwd}/${p}`, err => cliError(err, true)));
+    // Foreach directories
+    dirs.forEach(p => fs.mkdir(`${cwd}/${p}`, err => {
+      if (err.code === "EEXIST") return;
+      cliError(err, true, false);
+    }));
 
     // Create files
-    if (hasDeps) fs.writeFileSync(`${cwd}/.gitignore`, "deps");
     fs.writeFileSync(`${cwd}/dzp.json`, dzp);
     fs.writeFileSync(`${cwd}/README.md`, readme);
     fs.writeFileSync(`${cwd}/LICENSE`, "");
@@ -131,7 +136,7 @@ ${description}`;
     // Content
     fs.writeFileSync(
       `${cwd}/${style.main}${name}.dsc`, 
-      style.config ? main : `${conf}${EOL.repeat(2)}${main}`
+      style.config ? main : `${conf}\n\n${main}`
     );
 
     if (style.config) fs.writeFileSync(`${cwd}/${style.config}config.dsc`, conf);

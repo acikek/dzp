@@ -22,7 +22,7 @@
   "dependencies": {
     "arg": "^5.0.0",
     "chalk": "^4.1.1",
-    "detect-newline": "^3.1.0",
+    "eol": "^0.9.1",
     "readdirp": "^3.6.0",
     "semver": "^7.3.5"
   },

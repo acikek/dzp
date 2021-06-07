@@ -1,6 +1,6 @@
 const fs = require("fs");
-const detectNewline = require("detect-newline");
 const readdirp = require("readdirp");
+const eol = require("eol");
 
 const cliError = require("./error.js");
 
@@ -9,7 +9,8 @@ function groupScripts(arr) {
   let index = 0, times = 0;
 
   arr.forEach(l => {
-    if ((l.startsWith(" ") || !l) && !!result[index]) {
+    if ((l.startsWith(" ") || !l)) {
+      if (!result[index]) return;
       result[index] = `${result[index]}\n${l}`;
     } else {
       if (!l) return;
@@ -44,11 +45,10 @@ async function getScripts(find) {
   }
 
   const files = paths.map(p => {
-    const data = fs.readFileSync(p).toString();
-    const eol = detectNewline(data);
+    const data = eol.lf(fs.readFileSync(p).toString());
     
-    const scriptData = data.split(eol).filter(l => !l.trim().startsWith("#")).join(eol);
-    const result = groupScripts(scriptData.split(eol));
+    const scriptData = data.split("\n").filter(l => !l.trim().startsWith("#")).join("\n");
+    const result = groupScripts(scriptData.split("\n"));
 
     if (!result) {
       cliError(`could not validate scripts in '${p}'`, true, false);

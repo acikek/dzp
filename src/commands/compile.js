@@ -21,7 +21,9 @@ module.exports = new Command("compile", "Compiles the project to a single file",
       .join("\n\n");
 
     const data = 
-`#| ${dzp.name || "Project Name"}
+`#: dzp-ignore
+
+#| ${dzp.name || "Project Name"}
 #| ${dzp.description || "Project Description"}
 #|
 #| @version ${dzp.version || "1.0.0"}

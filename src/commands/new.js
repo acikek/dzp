@@ -89,7 +89,7 @@ module.exports = new Command(
 `${name.toLowerCase()}:
   type: world
   events:
-    on reload scripts:
+    after reload scripts:
     - if <script[${confName}].data_key[enabled]>:
       - debug log "Hello, world!"`;
 

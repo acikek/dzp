@@ -6,23 +6,24 @@ function parseArgs(argv) {
     return arg(
       {
         // Arguments
+        "--data":         Boolean,
         "--help":         Boolean,
-        "--version":      Boolean,
-        "--spacing":      Number,
-        "--style":        String,
+        "--here":         Boolean,
         "--json":         Boolean,
-        "--use":          String,
         "--list":         Boolean,
         "--no-deps":      Boolean,
         "--no-git":       Boolean,
+        "--spacing":      Number,
+        "--style":        String,
         "--usage":        Boolean,
+        "--use":          String,
         "--update":       Boolean,
-        "--data":         Boolean,
+        "--version":      Boolean,
   
         // Aliases
         "-h": "--help",
-        "-v": "--version",
-        "-u": "--usage"
+        "-u": "--usage",
+        "-v": "--version"
       },
       {
         argv

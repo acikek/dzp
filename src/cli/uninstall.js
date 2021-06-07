@@ -3,7 +3,7 @@ const path = require("path");
 
 const cliError = require("./error.js");
 
-async function uninstall(dir, pkg, proj) {
+async function uninstall(dir, pkg) {
   const contents = fs.readdirSync(dir);
   const folder = path.basename(pkg);
 

@@ -7,15 +7,18 @@ const updateDzp = require("../cli/updateDzp.js");
 
 module.exports = new Command("uninstall", "Uninstalls a dependency", "<name>")
   .setExec(async (parsed, pkg) => {
-    if (!pkg) return cliError("no dependency provided");
+    if (!pkg) return cliError("no package name provided");
 
+    const here = parsed["--here"];
     const cwd = process.cwd();
-    const dir = `${cwd}/deps`;
+    const dir = `${cwd}${here ? "" : "/deps"}`;
     const proj = getDzp(cwd);
 
-    await uninstall(dir, pkg, proj);
+    await uninstall(dir, pkg);
 
-    // bad!
-    proj.dependencies = proj.dependencies.filter(e => !e.endsWith(pkg));
-    updateDzp(`${cwd}/dzp.json`, proj);
+    if (!here) {
+      // bad!
+      proj.dependencies = proj.dependencies.filter(e => !e.endsWith(pkg));
+      updateDzp(`${cwd}/dzp.json`, proj);
+    }
   });

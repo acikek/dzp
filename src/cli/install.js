@@ -14,7 +14,7 @@ const installed = [];
  * is to provide directory setup and a small dependency system, it is fine for a first release.
  */
 
-async function install(dir, url, proj, contents, update) {
+async function install(dir, url, proj, contents, update, here) {
   const folder = path.basename(url);
   const isInstalled = !installed.includes(url) && contents.includes(folder);
   const cloning = (isInstalled && update) || !isInstalled;
@@ -32,8 +32,10 @@ async function install(dir, url, proj, contents, update) {
 
   installed.push(url);
 
-  if (!contents.includes(folder)) contents.push(folder);
-  if (!proj.dependencies.includes(url)) proj.dependencies.push(url);
+  if (!here) {
+    if (!contents.includes(folder)) contents.push(folder);
+    if (!proj.dependencies.includes(url)) proj.dependencies.push(url);
+  }
 
   if (dzp.dependencies) dzp.dependencies.forEach(d => install(dir, d, proj, contents, update));
 }

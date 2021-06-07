@@ -1,14 +1,14 @@
-function scriptCategories(scripts) {
+function scriptCategories(scripts, data) {
   const categories = {};
 
   scripts.forEach(s => {
     const type = s.type;
-    const name = s.name;
+    const val = data ? s.data : s.name;
 
     if (!categories[type]) {
-      categories[type] = [name];
+      categories[type] = [val];
     } else {
-      categories[type].push(name);
+      categories[type].push(val);
     }
   });
 

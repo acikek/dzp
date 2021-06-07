@@ -25,7 +25,10 @@ module.exports = new Command("compile", "Compiles the project to a single file",
 #| ${dzp.description || "Project Description"}
 #|
 #| @version ${dzp.version || "1.0.0"}
-#| @author ${dzp.author || "Author"}`;
+#| @author ${dzp.author || "Author"}
 
-    console.log(data);
+
+${scripts}`;
+
+    fs.writeFileSync(dir, data);
   });

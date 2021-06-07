@@ -13,7 +13,7 @@ function groupScripts(arr) {
       if (!result[index]) return;
       result[index] = `${result[index]}\n${l}`;
     } else {
-      if (!l) return;
+      if (!l || l.startsWith("#")) return;
       if (times !== 0) index++;
       result[index] = l; times++;
     }
@@ -22,12 +22,17 @@ function groupScripts(arr) {
   return result;
 }
 
+function trimWhitespace(arr) {
+  while (!arr[arr.length - 1].trim()) arr.pop();
+  return arr;
+}
+
 function parseScript(f) {
   return {
     path: f.path,
     name: f.data[0].includes(":") ? f.data[0].split(":")[0] : null,
     type: f.data[1].includes("type: ") ? f.data[1].split("type: ")[1] : null,
-    data: f.data
+    data: trimWhitespace(f.data)
   };
 }
 
@@ -47,7 +52,7 @@ async function getScripts(find) {
   const files = paths.map(p => {
     const data = eol.lf(fs.readFileSync(p).toString());
     
-    const scriptData = data.split("\n").filter(l => !l.trim().startsWith("#")).join("\n");
+    const scriptData = data//.split("\n").filter(l => !l.trim().startsWith("#")).join("\n");
     const result = groupScripts(scriptData.split("\n"));
 
     if (!result) {

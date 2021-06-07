@@ -1,7 +1,6 @@
 const { EOL } = require("os");
 
 const Command = require("../classes/Command.js");
-
 const getScripts = require("../cli/scripts.js");
 
 const help = `Run without arguments to list all script names.

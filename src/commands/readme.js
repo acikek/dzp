@@ -4,6 +4,7 @@ const Command = require("../classes/Command.js");
 
 const cliError = require("../cli/error.js");
 const getDzp = require("../cli/getDzp.js");
+const scriptCategories = require("../cli/scriptCategories.js");
 const getScripts = require("../cli/scripts.js");
 
 const help = `Use the '--json' flag to save the resulting object to 'dzp-readme.json'.
@@ -52,18 +53,7 @@ git clone ${repo}
 
     // Script section
     const scriptData = await getScripts();
-    const categories = {};
-
-    scriptData.forEach(s => {
-      const type = s.type;
-      const name = s.name;
-
-      if (!categories[type]) {
-        categories[type] = [name];
-      } else {
-        categories[type].push(name);
-      }
-    });
+    const categories = scriptCategories(scriptData);
 
     const scriptSections = Object.entries(categories)
       .sort((a, b) => a[0].localeCompare(b[0]))

@@ -10,7 +10,7 @@ const updateDzp = require("../cli/updateDzp.js");
 const help = `To install the project's current dependency list, run the command without any arguments.
 To force-update dependencies, run the command with the --update flag.`
 
-module.exports = new Command("install", "Installs a dependency chain", "[<repo>] [--update]", help)
+module.exports = new Command("install", "Installs a dependency chain", "[<repo>] [--here] [--update]", help)
   .setExec(async (parsed, url) => {
     const here = parsed["--here"];
     const update = parsed["--update"];

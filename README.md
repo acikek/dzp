@@ -62,6 +62,10 @@ The Denizen files and README are pre-fitted with boilerplate code, and the `dzp.
 View all commands with `dzp help --usage`.<br>
 To view a specific command and its extended description, run `dzp <command> --help`.
 
+### `compile`
+**Usage**: `dzp compile <path>`<br>
+Compiles the project to a single file.
+
 ### `get`
 **Usage**: `dzp get <key>`<br>
 Retrieves a project config value.
@@ -71,7 +75,7 @@ Retrieves a project config value.
 Displays the help message.
 
 ### `install`
-**Usage**: `dzp install [<repo>] [--update]`<br>
+**Usage**: `dzp install [<repo>] [--here] [--update]`<br>
 Installs a dependency chain.
 
 ### `new`
@@ -95,7 +99,7 @@ Updates a project config value.
 Lists the loaded style names.
 
 ### `uninstall`
-**Usage**: `dzp uninstall <name>`<br>
+**Usage**: `dzp uninstall <name> [--here]`<br>
 Uninstalls a dependency.
 
 ## License

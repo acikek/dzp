@@ -5,7 +5,7 @@ const getDzp = require("../cli/getDzp.js");
 const uninstall = require("../cli/uninstall.js");
 const updateDzp = require("../cli/updateDzp.js");
 
-module.exports = new Command("uninstall", "Uninstalls a dependency", "<name>")
+module.exports = new Command("uninstall", "Uninstalls a dependency", "<name> [--here]")
   .setExec(async (parsed, pkg) => {
     if (!pkg) return cliError("no package name provided");
 

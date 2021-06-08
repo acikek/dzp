@@ -124,8 +124,10 @@ ${description}`;
 
     // Foreach directories
     dirs.forEach(p => fs.mkdir(`${cwd}/${p}`, err => {
-      if (err.code === "EEXIST") return;
-      cliError(err, true, false);
+      if (err) {
+        if (err.code === "EEXIST") return;
+        cliError(err, true, false);
+      }
     }));
 
     // Create files

@@ -13,6 +13,7 @@ function parseArgs(argv) {
         "--list":         Boolean,
         "--no-deps":      Boolean,
         "--no-git":       Boolean,
+        // "--save":         Boolean,
         "--spacing":      Number,
         "--style":        String,
         "--usage":        Boolean,

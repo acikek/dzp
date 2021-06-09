@@ -1,10 +1,38 @@
-const { EOL } = require("os");
+const path = require("path");
+
+const chalk = require("chalk");
 
 const Command = require("../classes/Command.js");
 const getScripts = require("../cli/scripts.js");
 
 const help = `Run without arguments to list all script names.
 Use the --data flag to view the raw script.`;
+
+const formatSection = title => chalk.cyanBright.bold(`== ${title} ==`);
+const formatList = (name, items) => `${formatSection(name)}\n${items.map(i => `- ${chalk.greenBright(`${i.name} (${i.type})`)}: ${i.info}`).join("\n")}`;
+
+function formatMetadata(name, s) {
+  const m = s.metadata;
+  const result = [];
+
+  result.push(
+`${formatSection("METADATA")}
+Name: ${name}
+Type: ${s.type}
+Path: ${s.path} ${chalk.gray(`(${process.cwd()}${path.sep}${s.path})`)}`
+  );
+
+  if (m.deprecated) result.push(`${chalk.yellow.bold("WARNING:")} This script is ${chalk.red("deprecated")}!`);
+  if (m.desc.length > 0) result.push(m.desc.join("\n"));
+  if (m.usage) result.push(`${formatSection("USAGE")}\n${m.usage[0].type}`);
+
+  if (m.def) result.push(formatList("DEFINITIONS", m.def));
+  if (m.determine) result.push(`${formatSection("DETERMINE")}\n${chalk.greenBright(`(${m.determine[0].type})`)} ${m.determine[0].name}`);
+  if (m.key) result.push(formatList("SCRIPT KEYS", m.key));
+  if (m.uses) result.push(`${formatSection("USES")}\n${m.uses[0].type.split(" ").map(s => `- ${s}`).join("\n")}`)
+
+  return result;
+}
 
 module.exports = new Command("script", "Finds info about a script", "[<name>] [--list] [--data]", help)
   .setExec(async (parsed, name) => {
@@ -14,17 +42,15 @@ module.exports = new Command("script", "Finds info about a script", "[<name>] [-
       console.log(s
         .map(o => o.name)
         .sort()
-        .join(`${parsed["--list"] ? EOL : ", "}`)
+        .join(`${parsed["--list"] ? "\n" : ", "}`)
       );
     } else {
       if (parsed["--data"]) {
-        console.log(s.data.join(EOL));
+        console.log(s.data.join("\n"));
       } else {
-        console.log(
-`Name: ${name}
-Type: ${s.type}
-Path: ${s.path}`
-        );
+        const formatted = formatMetadata(name, s);
+
+        console.log(formatted.join("\n\n"));
       }
     }
   });

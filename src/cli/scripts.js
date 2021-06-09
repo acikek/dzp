@@ -1,3 +1,5 @@
+// TODO This file needs to be split up.
+
 const fs = require("fs");
 const readdirp = require("readdirp");
 const eol = require("eol");
@@ -16,8 +18,8 @@ function parseRules(arr) {
 
   const parsed = Object.assign({},
     ...result
-      .filter(r => r.split("#:")[1].trim().startsWith("dzp-"))
       .map(r => r.split("#:")[1].trim())
+      .filter(r => r && r.startsWith("dzp-"))
       .map(r => {
         const cmd = r.split("dzp-")[1].trim();
         const [rule, ...args] = cmd.split(" ");
@@ -31,7 +33,7 @@ function parseRules(arr) {
 
 function groupScripts(arr) {
   const rules = parseRules(arr);
-  arr.splice(0, rules.length);
+  arr.splice(0, Object.keys(rules).length);
 
   // if no args for ignore, just exit file
   // if no ignore, use empty array
@@ -39,18 +41,31 @@ function groupScripts(arr) {
   else if (!rules.ignore) rules.ignore = [];
 
   const result = [];
-  let index = 0, times = 0;
+  let index = 0, times = 0, metadata = [];
 
   arr.forEach(l => {
-    if ((l.startsWith(" ") || !l)) {
+    if ((l.startsWith(" "))) {
       if (!result[index]) return;
+
+      metadata = [];
       result[index] = `${result[index]}\n${l}`;
     } else {
-      if (!l || l.startsWith("#")) return;
-      if (rules.ignore.includes(l.split(":")[0].trim())) return;
+      if (!l || l.trim().startsWith("#|")) return;
+
+      const isMetadata = l.startsWith("#") && (!result[index] || result[index].split("\n").filter(l => !l.startsWith("#")).length > 0);
+      if (isMetadata) return metadata.push(l);
+      
+      // check ignored
+      if (rules.ignore.includes(l.split(":")[0].trim())) {
+        index++; return metadata = [];
+      }
 
       if (times !== 0) index++;
-      result[index] = l; times++;
+
+      if (metadata.length > 0) result[index] = `${metadata.join("\n")}\n`;
+      result[index] = result[index] ? `${result[index]}${l}` : l;
+
+      times++;
     }
   });
 
@@ -62,12 +77,80 @@ function trimWhitespace(arr) {
   return arr;
 }
 
+// todo put this in a config
+const COMMENT = /#+ *(.+)/;
+const METADATA = {
+  CMD: /@(\S+)/, 
+  INFO: /@\S+ (.+)/,
+  TYPE: /@\S+ {(\S+)} (.+)/,
+  FULL: /@\S+(?: {(\S+)}|) ([^:\n]+)(?: ?: ?(.+)|)/
+};
+
+const COMMANDS = Object.entries({
+  TAG: [ "deprecated" ],
+  INFO: [ "usage", "uses" ],
+  TYPE: [ "determine" ],
+  FULL: [ "def", "key" ]
+});
+
+function parseMetadata(f) {
+  const lines = [];
+
+  f.every(l => {
+    if (l.startsWith("#")) {
+      lines.push(l);
+      return true;
+    } else return false;
+  });
+
+  const parsed = { desc: [] };
+
+  lines
+    .map(m => m.match(COMMENT)[1])
+    .filter(m => m)
+    .forEach(m => {
+      const c = m.match(METADATA.CMD);
+
+      if (c) {
+        const cmd = c[1].toLowerCase();
+
+        const typeEntry = COMMANDS.filter(c => c[1].includes(cmd));
+        const type = typeEntry.length < 1 ? "INFO" : typeEntry[0][0];
+
+        if (type === "TAG") return parsed[cmd] = true;
+
+        const match = m.match(METADATA[type]);
+
+        if (!match) return;
+      
+        const [dt, name, info] = match.slice(1, 4);
+        if (!parsed[cmd]) parsed[cmd] = [];
+
+        parsed[cmd].push({
+          type: type === "INFO" ? dt.split("$n").join("\n") : dt,
+          name,
+          info
+        });
+      } else {
+        parsed.desc.push(m);
+      }
+    });
+
+  return parsed;
+}
+
 function parseScript(f) {
+  const metadata = parseMetadata(f.data);
+  const keyLen = Object.values(metadata).flat().length;
+
+  f.data.splice(0, keyLen);
+
   return {
-    path: f.path,
+    ...f,
     name: f.data[0].includes(":") ? f.data[0].split(":")[0] : null,
     type: f.data[1].includes("type: ") ? f.data[1].split("type: ")[1] : null,
-    data: trimWhitespace(f.data)
+    data: trimWhitespace(f.data),
+    metadata
   };
 }
 
@@ -87,8 +170,8 @@ async function getScripts(find) {
   const files = paths.map(p => {
     const data = eol.lf(fs.readFileSync(p).toString());
     
-    const scriptData = data; //.split("\n").filter(l => !l.trim().startsWith("#")).join("\n");
-    const result = groupScripts(scriptData.split("\n"));
+    const scriptData = data.split("\n"); //.split("\n").filter(l => !l.trim().startsWith("#|"));
+    const result = groupScripts(scriptData);
 
     if (!result) {
       cliError(`could not validate scripts in '${p}'`, true, false);
@@ -96,9 +179,11 @@ async function getScripts(find) {
     }
 
     return result.map(x => {
+      const lines = x.split("\n");
+
       return { 
         path: p,
-        data: x.split("\n")
+        data: lines
       }
     });
   })
@@ -106,13 +191,21 @@ async function getScripts(find) {
   .flat();
 
   if (find) {
-    const s = files.find(f => f.data[0].split(":")[0].trim().toLowerCase() === find.toLowerCase());
+    const s = files.find(f => {
+      return f.data
+        .filter(l => l && !l.startsWith("#"))[0]
+        .split(":")[0]
+        .trim() === find;
+    });
+
     if (!s) cliError("script does not exist");
 
     return parseScript(s);
   }
 
-  return files.map(parseScript);
+  const parsed = files.map(parseScript);
+
+  return parsed;
 }
 
 module.exports = getScripts;

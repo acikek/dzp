@@ -39,7 +39,7 @@ dDoc comments consist of description and command lines. Description lines are tr
 
 Additionally, the commands and their respective types are stored in the `src/config.json` file. Below are the defaults:
 
-```py
+```t
 # Tags
 @cmd
 
@@ -93,4 +93,4 @@ test_config:
   my_name: cool_guy78
 ```
 
-To view the result, paste this into a project file and run `dzp script test_config --force`.*
+To view the result, paste this into a project file and run `dzp script test_config --force`.

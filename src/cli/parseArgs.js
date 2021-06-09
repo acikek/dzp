@@ -7,13 +7,14 @@ function parseArgs(argv) {
       {
         // Arguments
         "--data":         Boolean,
+        "--force":        Boolean,
         "--help":         Boolean,
         "--here":         Boolean,
         "--json":         Boolean,
         "--list":         Boolean,
         "--no-deps":      Boolean,
         "--no-git":       Boolean,
-        // "--save":         Boolean,
+        "--save":         Boolean,
         "--spacing":      Number,
         "--style":        String,
         "--usage":        Boolean,

@@ -6,6 +6,11 @@ const Command = require("../classes/Command.js");
 const getScripts = require("../cli/scripts.js");
 
 const help = `Run without arguments to list all script names.
+Use the --list flag to organize the script names with newlines.
+
+Use the --save flag to save the script data for this command to use again.
+Use the --force flag to ignore the existing script data if present.
+
 Use the --data flag to view the raw script.`;
 
 const formatSection = title => chalk.cyanBright.bold(`== ${title} ==`);
@@ -29,14 +34,14 @@ Path: ${s.path} ${chalk.gray(`(${process.cwd()}${path.sep}${s.path})`)}`
   if (m.def) result.push(formatList("DEFINITIONS", m.def));
   if (m.determine) result.push(`${formatSection("DETERMINE")}\n${chalk.greenBright(`(${m.determine[0].type})`)} ${m.determine[0].name}`);
   if (m.key) result.push(formatList("SCRIPT KEYS", m.key));
-  if (m.uses) result.push(`${formatSection("USES")}\n${m.uses[0].type.split(" ").map(s => `- ${s}`).join("\n")}`)
+  if (m.uses) result.push(`${formatSection("USES")}\n${m.uses[0].type.split("\n").join("").split(" ").map(s => `- ${s}`).join("\n")}`)
 
   return result;
 }
 
-module.exports = new Command("script", "Finds info about a script", "[<name>] [--list] [--data]", help)
+module.exports = new Command("script", "Finds info about a script", "[<name>] [--list] [--data] [--save] [--force]", help)
   .setExec(async (parsed, name) => {
-    const s = await getScripts(name);
+    const s = await getScripts(name, parsed);
 
     if (!name) {
       console.log(s

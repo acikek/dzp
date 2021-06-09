@@ -4,7 +4,17 @@ const fs = require("fs");
 const readdirp = require("readdirp");
 const eol = require("eol");
 
+const config = require("../config.json");
+
 const cliError = require("./error.js");
+
+const COMMENT = /#+ *(.+)/;
+const METADATA = {
+  CMD: /@(\S+)/, 
+  INFO: /@\S+ (.+)/,
+  TYPE: /@\S+ {(\S+)} (.+)/,
+  FULL: /@\S+(?: {(\S+)}|) ([^:\n]+)(?: ?: ?(.+)|)/
+};
 
 function parseRules(arr) {
   const result = [];
@@ -77,15 +87,6 @@ function trimWhitespace(arr) {
   return arr;
 }
 
-// todo put this in a config
-const COMMENT = /#+ *(.+)/;
-const METADATA = {
-  CMD: /@(\S+)/, 
-  INFO: /@\S+ (.+)/,
-  TYPE: /@\S+ {(\S+)} (.+)/,
-  FULL: /@\S+(?: {(\S+)}|) ([^:\n]+)(?: ?: ?(.+)|)/
-};
-
 const COMMANDS = Object.entries({
   TAG: [ "deprecated" ],
   INFO: [ "usage", "uses" ],
@@ -114,8 +115,8 @@ function parseMetadata(f) {
       if (c) {
         const cmd = c[1].toLowerCase();
 
-        const typeEntry = COMMANDS.filter(c => c[1].includes(cmd));
-        const type = typeEntry.length < 1 ? "INFO" : typeEntry[0][0];
+        const typeEntry = config.ddoc.commands[cmd];
+        const type = typeEntry ? typeEntry.toUpperCase() : "INFO";
 
         if (type === "TAG") return parsed[cmd] = true;
 
@@ -154,12 +155,26 @@ function parseScript(f) {
   };
 }
 
-async function getScripts(find) {
+async function getScripts(find, flags) {
   const paths = [];
+  const cwd = process.cwd();
+  const dir = fs.readdirSync(cwd);
+
+  if (!flags["--force"] && dir.includes("dzp-scripts.json")) {
+    const data = JSON.parse(fs.readFileSync(`${cwd}/dzp-scripts.json`).toString());
+
+    if (data.scripts) {
+      if (find) {
+        return data.scripts.find(s => s.name === find);
+      }
+
+      return data.scripts;
+    }
+  }
 
   // This is an efficient method, according to the readdirp docs.
   for await (const file of readdirp(
-    process.cwd(), { 
+    cwd, { 
       fileFilter: "*.dsc", 
       directoryFilter: ["!.git", "!deps"] 
     }
@@ -204,6 +219,12 @@ async function getScripts(find) {
   }
 
   const parsed = files.map(parseScript);
+
+  if (flags["--save"]) {
+    fs.writeFileSync(`${cwd}/dzp-scripts.json`, JSON.stringify({
+      scripts: parsed
+    }, null, 2));
+  }
 
   return parsed;
 }

@@ -57,6 +57,8 @@ README.md
 
 The Denizen files and README are pre-fitted with boilerplate code, and the `dzp.json` file holds the information that you entered upon initialization.
 
+**(Advanced Documentation)[https://github.com/acikek/dzp/blob/main/DOCS.md]**
+
 ## Commands
 
 View all commands with `dzp help --usage`.<br>

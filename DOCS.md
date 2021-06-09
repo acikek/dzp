@@ -74,3 +74,23 @@ Additionally, the commands and their respective types are stored in the `src/con
 
 * `def`: A definition on the procedure or task.
 * `key`: A script key on a task or data script.
+
+### Example
+
+```yml
+# This is my test config.
+# Here's some more description.
+
+# @key {boolean} enabled: whether my project is enabled or not.
+# @key {element} my_name: the name of a cool guy!
+# @deprecated
+
+#| this comment is ignored!
+
+test_config:
+  type: data
+  enabled: true
+  my_name: cool_guy78
+```
+
+To view the result, paste this into a project file and run `dzp script test_config --force`.*

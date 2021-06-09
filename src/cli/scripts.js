@@ -172,11 +172,14 @@ async function getScripts(find, flags) {
     }
   }
 
+  const dirs = ["!.git"];
+  if (flags["--no-deps"]) dirs.push("!deps");
+
   // This is an efficient method, according to the readdirp docs.
   for await (const file of readdirp(
     cwd, { 
       fileFilter: "*.dsc", 
-      directoryFilter: ["!.git", "!deps"] 
+      directoryFilter: dirs
     }
   )) {
     paths.push(file.path);

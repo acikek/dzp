@@ -10,6 +10,7 @@ Use the --list flag to organize the script names with newlines.
 
 Use the --save flag to save the script data for this command to use again.
 Use the --force flag to ignore the existing script data if present.
+Use the --no-deps flag to ignore the 'deps' folder.
 
 Use the --data flag to view the raw script.`;
 

@@ -89,7 +89,7 @@ Creates a new DeniZip project.
 Generates a README file.
 
 ### `script`
-**Usage**: `dzp script [<name>] [--list] [--data] [--save] [--force]`<br>
+**Usage**: `dzp script [<name>] [--list] [--data] [--save] [--force] [--no-deps]`<br>
 Finds info about a script.
 
 ### `set`

@@ -87,13 +87,6 @@ function trimWhitespace(arr) {
   return arr;
 }
 
-const COMMANDS = Object.entries({
-  TAG: [ "deprecated" ],
-  INFO: [ "usage", "uses" ],
-  TYPE: [ "determine" ],
-  FULL: [ "def", "key" ]
-});
-
 function parseMetadata(f) {
   const lines = [];
 
@@ -122,7 +115,7 @@ function parseMetadata(f) {
 
         const match = m.match(METADATA[type]);
 
-        if (!match) return;
+        if (!match) return parsed.desc.push(m);
       
         const [dt, name, info] = match.slice(1, 4);
         if (!parsed[cmd]) parsed[cmd] = [];
@@ -165,7 +158,10 @@ async function getScripts(find, flags) {
 
     if (data.scripts) {
       if (find) {
-        return data.scripts.find(s => s.name === find);
+        const s = data.scripts.find(s => s.name === find);
+        if (!s) cliError("script does not exist");
+
+        return s;
       }
 
       return data.scripts;

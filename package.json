@@ -1,6 +1,6 @@
 {
   "name": "dzp",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "description": "DeniZip, the Denizen Project Manager",
   "main": "src/index.js",
   "bin": {

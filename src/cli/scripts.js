@@ -97,7 +97,7 @@ function parseMetadata(f) {
     } else return false;
   });
 
-  const parsed = { desc: [] };
+  const parsed = { desc: [], raw: [] };
 
   lines
     .map(m => m.match(COMMENT)[1])
@@ -128,6 +128,8 @@ function parseMetadata(f) {
       } else {
         parsed.desc.push(m);
       }
+
+      parsed.raw.push(m);
     });
 
   return parsed;
@@ -135,7 +137,11 @@ function parseMetadata(f) {
 
 function parseScript(f) {
   const metadata = parseMetadata(f.data);
-  const keyLen = Object.values(metadata).flat().length;
+
+  const copy = { ...metadata };
+  delete copy.raw;
+
+  const keyLen = Object.values(copy).flat().length;
 
   f.data.splice(0, keyLen);
 
@@ -148,12 +154,12 @@ function parseScript(f) {
   };
 }
 
-async function getScripts(find, flags) {
+async function getScripts(find, force, noDeps, save) {
   const paths = [];
   const cwd = process.cwd();
   const dir = fs.readdirSync(cwd);
 
-  if (!flags["--force"] && dir.includes("dzp-scripts.json")) {
+  if (!force && dir.includes("dzp-scripts.json")) {
     const data = JSON.parse(fs.readFileSync(`${cwd}/dzp-scripts.json`).toString());
 
     if (data.scripts) {
@@ -169,7 +175,7 @@ async function getScripts(find, flags) {
   }
 
   const dirs = ["!.git"];
-  if (flags["--no-deps"]) dirs.push("!deps");
+  if (noDeps) dirs.push("!deps");
 
   // This is an efficient method, according to the readdirp docs.
   for await (const file of readdirp(
@@ -219,7 +225,7 @@ async function getScripts(find, flags) {
 
   const parsed = files.map(parseScript);
 
-  if (flags["--save"]) {
+  if (save) {
     fs.writeFileSync(`${cwd}/dzp-scripts.json`, JSON.stringify({
       scripts: parsed
     }, null, 2));

@@ -52,7 +52,7 @@ git clone ${repo}
     const example = `## Example${sep}Use this space to guide the user through the features your project provides. If all they need to worry about is installation, then you can omit this section.`;  
 
     // Script section - always force
-    const scriptData = await getScripts(null, { "--force": true });
+    const scriptData = await getScripts(null, true, true, false);
     const categories = scriptCategories(scriptData);
 
     const scriptSections = Object.entries(categories)

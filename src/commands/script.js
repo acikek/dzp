@@ -42,7 +42,7 @@ Path: ${s.path} ${chalk.gray(`(${process.cwd()}${path.sep}${s.path})`)}`
 
 module.exports = new Command("script", "Finds info about a script", "[<name>] [--list] [--data] [--save] [--force]", help)
   .setExec(async (parsed, name) => {
-    const s = await getScripts(name, parsed);
+    const s = await getScripts(name, parsed["--force"], parsed["--no-deps"], parsed["--save"]);
 
     if (!name) {
       console.log(s

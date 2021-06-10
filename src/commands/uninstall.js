@@ -12,7 +12,7 @@ module.exports = new Command("uninstall", "Uninstalls a dependency", "<name> [--
     const here = parsed["--here"];
     const cwd = process.cwd();
     const dir = `${cwd}${here ? "" : "/deps"}`;
-    const proj = getDzp(cwd);
+    const proj = getDzp(cwd, !!here);
 
     await uninstall(dir, pkg);
 

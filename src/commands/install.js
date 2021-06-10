@@ -17,7 +17,7 @@ module.exports = new Command("install", "Installs a dependency chain", "[<repo>]
 
     const cwd = process.cwd();
     const dir = `${cwd}${here ? "" : "/deps"}`;
-    const proj = getDzp(cwd);
+    const proj = getDzp(cwd, !!here);
     const contents = fs.readdirSync(dir);
 
     if (!here && !fs.readdirSync(cwd).includes("deps")) {

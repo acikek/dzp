@@ -100,8 +100,9 @@ function parseMetadata(f) {
   const parsed = { desc: [], raw: [] };
 
   lines
-    .map(m => m.match(COMMENT)[1])
+    .map(m => m.match(COMMENT))
     .filter(m => m)
+    .map(m => m[1])
     .forEach(m => {
       const c = m.match(METADATA.CMD);
 

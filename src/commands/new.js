@@ -123,12 +123,14 @@ ${description}`;
     }
 
     // Foreach directories
-    dirs.forEach(p => fs.mkdir(`${cwd}/${p}`, err => {
-      if (err) {
+    dirs.forEach(async p => {
+      try {
+        fs.mkdirSync(`${cwd}/${p}`);
+      } catch (err) {
         if (err.code === "EEXIST") return;
         cliError(err, true, false);
       }
-    }));
+    });
 
     // Create files
     fs.writeFileSync(`${cwd}/dzp.json`, dzp);
@@ -141,5 +143,7 @@ ${description}`;
       style.config ? main : `${conf}\n\n${main}`
     );
 
-    if (style.config) fs.writeFileSync(`${cwd}/${style.config}config.dsc`, conf);
+    if (style.config) {
+      fs.writeFileSync(`${cwd}/${style.config}config.dsc`, conf);
+    }
   });
